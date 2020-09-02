@@ -26,14 +26,14 @@ public class XwikiTreeMacroPathParser {
 		this.count = count;
 	}
 
-	public void walk(String myPath) {
+	public String walk(String myPath) {
 		Path path = Paths.get(myPath);
 		this.setInitialCount(path.getNameCount() - 1);
 		StringBuilder builder = new StringBuilder();
 		builder.append("{{wrapper}}\n|(((\n{{tree}}\n{{velocity}}\n{{html}}\n<ul>\n");
 		builder.append(this.printElement(path));
 		builder.append("</ul>\n{{/html}}\n{{/velocity}}\n{{/tree}}\n)))|(((\n)))\n{{/wrapper}}");
-		System.out.println(builder.toString());
+		return builder.toString();
 	}
 
 	public boolean checkDirectory(Path p) {
@@ -90,6 +90,6 @@ public class XwikiTreeMacroPathParser {
 	public static void main(String[] args) {
 		XwikiTreeMacroPathParser parser = new XwikiTreeMacroPathParser();
 		String myPath = "F:\\workspace\\RaceControl\\src";
-		parser.walk(myPath);
+		System.out.println(parser.walk(myPath));
 	}
 }
