@@ -16,8 +16,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -98,6 +100,9 @@ public class XwikiTreeMacroBuilderGUI {
 
 		}
 	};
+	private JSplitPane splitPane;
+	private JScrollPane scrollPane;
+	private JTree tree;
 
 	/**
 	 * Launch the application.
@@ -138,9 +143,9 @@ public class XwikiTreeMacroBuilderGUI {
 		this.frmXwikiTreeMacro.setBounds(100, 100, 850, 500);
 		this.frmXwikiTreeMacro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0, 0 };
+		gridBagLayout.columnWidths = new int[] { 0, 129, 184, 0 };
 		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		this.frmXwikiTreeMacro.getContentPane().setLayout(gridBagLayout);
 
@@ -153,21 +158,30 @@ public class XwikiTreeMacroBuilderGUI {
 		gbc_lblCarpeta.gridy = 0;
 		this.frmXwikiTreeMacro.getContentPane().add(lblCarpeta, gbc_lblCarpeta);
 
+		this.splitPane = new JSplitPane();
+		GridBagConstraints gbc_splitPane = new GridBagConstraints();
+		gbc_splitPane.gridheight = 6;
+		gbc_splitPane.fill = GridBagConstraints.BOTH;
+		gbc_splitPane.gridx = 2;
+		gbc_splitPane.gridy = 0;
+		this.frmXwikiTreeMacro.getContentPane().add(this.splitPane, gbc_splitPane);
+
 		JScrollPane scrollStringTree = new JScrollPane();
-		GridBagConstraints gbc_scrollStringTree = new GridBagConstraints();
-		gbc_scrollStringTree.gridheight = 6;
-		gbc_scrollStringTree.fill = GridBagConstraints.BOTH;
-		gbc_scrollStringTree.gridx = 3;
-		gbc_scrollStringTree.gridy = 0;
-		this.frmXwikiTreeMacro.getContentPane().add(scrollStringTree, gbc_scrollStringTree);
+		this.splitPane.setRightComponent(scrollStringTree);
 
 		this.stringTree = new JTextArea();
 		scrollStringTree.setViewportView(this.stringTree);
 
+		this.scrollPane = new JScrollPane();
+		this.splitPane.setLeftComponent(this.scrollPane);
+
+		this.tree = new JTree();
+		this.scrollPane.setViewportView(this.tree);
+
 		this.textPane = new JTextPane();
 		this.textPane.setEditable(false);
 		GridBagConstraints gbc_textPane = new GridBagConstraints();
-		gbc_textPane.gridwidth = 3;
+		gbc_textPane.gridwidth = 2;
 		gbc_textPane.insets = new Insets(0, 0, 5, 5);
 		gbc_textPane.fill = GridBagConstraints.BOTH;
 		gbc_textPane.gridx = 0;
@@ -178,7 +192,7 @@ public class XwikiTreeMacroBuilderGUI {
 		GridBagConstraints gbc_btnFileChooser = new GridBagConstraints();
 		gbc_btnFileChooser.anchor = GridBagConstraints.EAST;
 		gbc_btnFileChooser.insets = new Insets(0, 0, 5, 5);
-		gbc_btnFileChooser.gridx = 2;
+		gbc_btnFileChooser.gridx = 1;
 		gbc_btnFileChooser.gridy = 2;
 		this.frmXwikiTreeMacro.getContentPane().add(this.btnFileChooser, gbc_btnFileChooser);
 		this.btnFileChooser.addActionListener(this.fileChooserActionListener);
@@ -187,14 +201,13 @@ public class XwikiTreeMacroBuilderGUI {
 		GridBagConstraints gbc_btnCopyText = new GridBagConstraints();
 		gbc_btnCopyText.anchor = GridBagConstraints.EAST;
 		gbc_btnCopyText.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCopyText.gridx = 2;
+		gbc_btnCopyText.gridx = 1;
 		gbc_btnCopyText.gridy = 3;
 		this.btnCopyText.addActionListener(this.copyActionListener);
 		this.frmXwikiTreeMacro.getContentPane().add(this.btnCopyText, gbc_btnCopyText);
 
 		this.lblExclusions = new JLabel("Exclusiones (incluye contenido .gitignore):");
 		GridBagConstraints gbc_lblExclusions = new GridBagConstraints();
-		gbc_lblExclusions.gridwidth = 2;
 		gbc_lblExclusions.anchor = GridBagConstraints.WEST;
 		gbc_lblExclusions.insets = new Insets(0, 0, 5, 5);
 		gbc_lblExclusions.gridx = 0;
@@ -205,14 +218,14 @@ public class XwikiTreeMacroBuilderGUI {
 		GridBagConstraints gbc_btnParseFolder = new GridBagConstraints();
 		gbc_btnParseFolder.anchor = GridBagConstraints.EAST;
 		gbc_btnParseFolder.insets = new Insets(0, 0, 5, 5);
-		gbc_btnParseFolder.gridx = 2;
+		gbc_btnParseFolder.gridx = 1;
 		gbc_btnParseFolder.gridy = 4;
 		this.frmXwikiTreeMacro.getContentPane().add(this.btnParseFolder, gbc_btnParseFolder);
 		this.btnParseFolder.addActionListener(this.parseTreeActionListener);
 
 		this.scrollExclusionTextArea = new JScrollPane();
 		GridBagConstraints gbc_scrollExclusionTextArea = new GridBagConstraints();
-		gbc_scrollExclusionTextArea.gridwidth = 3;
+		gbc_scrollExclusionTextArea.gridwidth = 2;
 		gbc_scrollExclusionTextArea.insets = new Insets(0, 0, 0, 5);
 		gbc_scrollExclusionTextArea.fill = GridBagConstraints.BOTH;
 		gbc_scrollExclusionTextArea.gridx = 0;
