@@ -1,14 +1,37 @@
 package es.pmkirsten.builder;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 public class XwikiTreeMacroPathBuilder {
 
 	private int initialCount = 0;
 	private int count = 0;
+	private LinkedHashSet<String> ignoreElements = new LinkedHashSet<>();
+	private LinkedHashSet<String> ignoreExtensions = new LinkedHashSet<>();
+
+	public LinkedHashSet<String> getIgnoreElements() {
+		return this.ignoreElements;
+	}
+
+	public void setIgnoreElements(LinkedHashSet<String> ignoreElements) {
+		this.ignoreElements = ignoreElements;
+	}
+
+	public LinkedHashSet<String> getIgnoreExtensions() {
+		return this.ignoreExtensions;
+	}
+
+	public void setIgnoreExtensions(LinkedHashSet<String> ignoreExtensions) {
+		this.ignoreExtensions = ignoreExtensions;
+	}
 
 	public int getInitialCount() {
 		return this.initialCount;
@@ -36,6 +59,53 @@ public class XwikiTreeMacroPathBuilder {
 		return builder.toString();
 	}
 
+	public void checkGitignores(Path p) {
+		List<File> gitignores = this.searchGitignores(p);
+		for (File gitignore : gitignores) {
+			try {
+				List<String> allLines = Files.readAllLines(gitignore.toPath());
+				for (String line : allLines) {
+					if (line.startsWith("#") || line.isEmpty()) {
+						continue;
+					}
+
+					if (line.endsWith("/")) {
+						line = line.replace("/", "");
+					}
+
+					if (line.contains("/") && !line.endsWith("/")) {
+						line = line.substring(line.lastIndexOf("/") + 1, line.length());
+					}
+
+					if (line.startsWith("*")) {
+						this.getIgnoreExtensions().add(line.substring(1));
+					}
+
+					this.getIgnoreElements().add(line);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public List<File> searchGitignores(Path p) {
+		ArrayList<File> list = new ArrayList<>();
+
+		if (p.toFile().isFile() && p.getFileName().toString().equals(".gitignore")) {
+			list.add(p.toFile());
+			return list;
+		}
+
+		if (this.checkDirectory(p)) {
+			for (File children : p.toFile().listFiles()) {
+				list.addAll(this.searchGitignores(children.toPath()));
+			}
+		}
+
+		return list;
+	}
+
 	public boolean checkDirectory(Path p) {
 		return p.toFile().isDirectory();
 	}
@@ -45,10 +115,18 @@ public class XwikiTreeMacroPathBuilder {
 	}
 
 	public String printElement(Path p) {
+		if (this.getIgnoreElements().contains(p.getFileName().toString())) {
+			return "";
+		}
 		this.setCount(p.getNameCount());
 		int whiteSpaces = this.getCount() - this.getInitialCount();
 		StringBuilder builder = new StringBuilder();
 		if (!this.checkDirectory(p)) {
+			for (String extension : this.getIgnoreExtensions()) {
+				if (p.getFileName().toString().endsWith(extension)) {
+					return "";
+				}
+			}
 			builder.append(this.returnWhitespaces(whiteSpaces));
 			builder.append("<li data-jstree='{\"icon\":\"glyphicon glyphicon-file\"}'>");
 			builder.append(p.getFileName());
@@ -74,7 +152,17 @@ public class XwikiTreeMacroPathBuilder {
 		builder.append(p.getFileName() + "\n");
 		builder.append(this.returnWhitespaces(whiteSpaces));
 		builder.append("<ul>\n");
+		List<File> folders = new ArrayList<>();
+		List<File> files = new ArrayList<>();
 		for (File children : p.toFile().listFiles()) {
+			if (this.checkDirectory(children.toPath())) {
+				folders.add(children);
+			} else {
+				files.add(children);
+			}
+		}
+		folders.addAll(files);
+		for (File children : folders) {
 			builder.append(this.printElement(children.toPath()));
 		}
 		this.setCount(p.getNameCount());
@@ -90,6 +178,8 @@ public class XwikiTreeMacroPathBuilder {
 	public static void main(String[] args) {
 		XwikiTreeMacroPathBuilder builder = new XwikiTreeMacroPathBuilder();
 		String myPath = "F:\\workspace\\RaceControl\\src";
+		builder.getIgnoreElements().add(".git");
+		builder.checkGitignores(Paths.get(myPath));
 		System.out.println(builder.walk(myPath));
 	}
 }
