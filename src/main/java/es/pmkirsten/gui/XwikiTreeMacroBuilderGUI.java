@@ -40,6 +40,9 @@ public class XwikiTreeMacroBuilderGUI {
 	protected JScrollPane scrollExclusionTextArea;
 	protected JTextArea exclusionTextArea;
 	protected XwikiTreeMacroPathBuilder builder = new XwikiTreeMacroPathBuilder();
+	protected JSplitPane splitPane;
+	protected JScrollPane scrollPane;
+	protected JTree gTree;
 	protected ActionListener fileChooserActionListener = new ActionListener() {
 
 		@Override
@@ -86,6 +89,7 @@ public class XwikiTreeMacroBuilderGUI {
 
 			}
 			String stringTree = XwikiTreeMacroBuilderGUI.this.builder.walk(XwikiTreeMacroBuilderGUI.this.path);
+			XwikiTreeMacroBuilderGUI.this.populateTree();
 			XwikiTreeMacroBuilderGUI.this.stringTree.setText(stringTree);
 		}
 	};
@@ -100,9 +104,6 @@ public class XwikiTreeMacroBuilderGUI {
 
 		}
 	};
-	private JSplitPane splitPane;
-	private JScrollPane scrollPane;
-	private JTree tree;
 
 	/**
 	 * Launch the application.
@@ -175,8 +176,9 @@ public class XwikiTreeMacroBuilderGUI {
 		this.scrollPane = new JScrollPane();
 		this.splitPane.setLeftComponent(this.scrollPane);
 
-		this.tree = new JTree();
-		this.scrollPane.setViewportView(this.tree);
+		this.gTree = new JTree();
+		this.gTree.setModel(null);
+		this.scrollPane.setViewportView(this.gTree);
 
 		this.textPane = new JTextPane();
 		this.textPane.setEditable(false);
@@ -243,4 +245,11 @@ public class XwikiTreeMacroBuilderGUI {
 	public JTextPane getTextPane() {
 		return this.textPane;
 	}
+
+	public void populateTree() {
+		this.scrollPane.setViewportView(null);
+		this.gTree = new JTree(this.builder.getModelTree());
+		this.scrollPane.setViewportView(this.gTree);
+	}
+
 }

@@ -10,12 +10,23 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 public class XwikiTreeMacroPathBuilder {
 
 	private int initialCount = 0;
 	private int count = 0;
 	private LinkedHashSet<String> ignoreElements = new LinkedHashSet<>();
 	private LinkedHashSet<String> ignoreExtensions = new LinkedHashSet<>();
+	private DefaultMutableTreeNode modelTree;
+
+	public DefaultMutableTreeNode getModelTree() {
+		return this.modelTree;
+	}
+
+	public void setModelTree(DefaultMutableTreeNode modelTree) {
+		this.modelTree = modelTree;
+	}
 
 	public LinkedHashSet<String> getIgnoreElements() {
 		return this.ignoreElements;
@@ -56,6 +67,7 @@ public class XwikiTreeMacroPathBuilder {
 		builder.append("{{wrapper}}\n|(((\n{{tree}}\n{{velocity}}\n{{html}}\n<ul>\n");
 		builder.append(this.printElement(path));
 		builder.append("</ul>\n{{/html}}\n{{/velocity}}\n{{/tree}}\n)))|(((\n)))\n{{/wrapper}}");
+		this.setModelTree(this.buildTreeModel(path));
 		return builder.toString();
 	}
 
@@ -110,8 +122,19 @@ public class XwikiTreeMacroPathBuilder {
 		return p.toFile().isDirectory();
 	}
 
-	public String returnWhitespaces(int times) {
-		return String.join("", Collections.nCopies(times, "  "));
+	public DefaultMutableTreeNode buildTreeModel(Path p) {
+
+		DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(p.getFileName());
+		if (this.checkDirectory(p)) {
+			for (File children : p.toFile().listFiles()) {
+				if (!this.getIgnoreElements().contains(p.getFileName().toString())) {
+					DefaultMutableTreeNode childNode = this.buildTreeModel(children.toPath());
+					treeNode.add(childNode);
+				}
+			}
+		}
+
+		return treeNode;
 	}
 
 	public String printElement(Path p) {
@@ -173,6 +196,10 @@ public class XwikiTreeMacroPathBuilder {
 
 		return builder.toString();
 
+	}
+
+	public String returnWhitespaces(int times) {
+		return String.join("", Collections.nCopies(times, "  "));
 	}
 
 	public static void main(String[] args) {
