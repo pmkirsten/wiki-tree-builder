@@ -1,11 +1,11 @@
-package es.pmkirsten.parser;
+package es.pmkirsten.builder;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 
-public class XwikiTreeMacroPathParser {
+public class XwikiTreeMacroPathBuilder {
 
 	private int initialCount = 0;
 	private int count = 0;
@@ -88,8 +88,8 @@ public class XwikiTreeMacroPathParser {
 	}
 
 	public static void main(String[] args) {
-		XwikiTreeMacroPathParser parser = new XwikiTreeMacroPathParser();
+		XwikiTreeMacroPathBuilder builder = new XwikiTreeMacroPathBuilder();
 		String myPath = "F:\\workspace\\RaceControl\\src";
-		System.out.println(parser.walk(myPath));
+		System.out.println(builder.walk(myPath));
 	}
 }

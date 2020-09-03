@@ -21,11 +21,11 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import es.pmkirsten.parser.XwikiTreeMacroPathParser;
+import es.pmkirsten.builder.XwikiTreeMacroPathBuilder;
 
-public class XwikiTreeMacroParserGUI {
+public class XwikiTreeMacroBuilderGUI {
 
-	protected JFrame frame;
+	protected JFrame frmXwikiTreeMacro;
 	protected JFileChooser fileChooser = new JFileChooser();
 	protected String path = null;
 	protected JTextArea textArea;
@@ -37,16 +37,16 @@ public class XwikiTreeMacroParserGUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String path = XwikiTreeMacroParserGUI.this.path == null ? "." : XwikiTreeMacroParserGUI.this.path;
-			XwikiTreeMacroParserGUI.this.fileChooser.setCurrentDirectory(new java.io.File(path));
-			XwikiTreeMacroParserGUI.this.fileChooser.setDialogTitle("Seleccionar carpeta");
-			XwikiTreeMacroParserGUI.this.fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			XwikiTreeMacroParserGUI.this.fileChooser.setAcceptAllFileFilterUsed(false);
+			String path = XwikiTreeMacroBuilderGUI.this.path == null ? "." : XwikiTreeMacroBuilderGUI.this.path;
+			XwikiTreeMacroBuilderGUI.this.fileChooser.setCurrentDirectory(new java.io.File(path));
+			XwikiTreeMacroBuilderGUI.this.fileChooser.setDialogTitle("Seleccionar carpeta");
+			XwikiTreeMacroBuilderGUI.this.fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			XwikiTreeMacroBuilderGUI.this.fileChooser.setAcceptAllFileFilterUsed(false);
 
-			if (XwikiTreeMacroParserGUI.this.fileChooser.showOpenDialog(XwikiTreeMacroParserGUI.this.frame) == JFileChooser.APPROVE_OPTION) {
-				XwikiTreeMacroParserGUI.this.path = XwikiTreeMacroParserGUI.this.fileChooser.getSelectedFile().getAbsolutePath();
-				XwikiTreeMacroParserGUI.this.textPane.setText(XwikiTreeMacroParserGUI.this.path);
-				XwikiTreeMacroParserGUI.this.btnParseFolder.doClick();
+			if (XwikiTreeMacroBuilderGUI.this.fileChooser.showOpenDialog(XwikiTreeMacroBuilderGUI.this.frmXwikiTreeMacro) == JFileChooser.APPROVE_OPTION) {
+				XwikiTreeMacroBuilderGUI.this.path = XwikiTreeMacroBuilderGUI.this.fileChooser.getSelectedFile().getAbsolutePath();
+				XwikiTreeMacroBuilderGUI.this.textPane.setText(XwikiTreeMacroBuilderGUI.this.path);
+				XwikiTreeMacroBuilderGUI.this.btnParseFolder.doClick();
 
 			} else {
 				System.out.println("No Selection ");
@@ -59,9 +59,9 @@ public class XwikiTreeMacroParserGUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			XwikiTreeMacroPathParser parser = new XwikiTreeMacroPathParser();
-			String stringTree = parser.walk(XwikiTreeMacroParserGUI.this.path);
-			XwikiTreeMacroParserGUI.this.textArea.setText(stringTree);
+			XwikiTreeMacroPathBuilder builder = new XwikiTreeMacroPathBuilder();
+			String stringTree = builder.walk(XwikiTreeMacroBuilderGUI.this.path);
+			XwikiTreeMacroBuilderGUI.this.textArea.setText(stringTree);
 		}
 	};
 
@@ -69,7 +69,7 @@ public class XwikiTreeMacroParserGUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			StringSelection stringSelection = new StringSelection(XwikiTreeMacroParserGUI.this.textArea.getText());
+			StringSelection stringSelection = new StringSelection(XwikiTreeMacroBuilderGUI.this.textArea.getText());
 			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 			clipboard.setContents(stringSelection, null);
 
@@ -91,8 +91,8 @@ public class XwikiTreeMacroParserGUI {
 							break;
 						}
 					}
-					XwikiTreeMacroParserGUI window = new XwikiTreeMacroParserGUI();
-					window.frame.setVisible(true);
+					XwikiTreeMacroBuilderGUI window = new XwikiTreeMacroBuilderGUI();
+					window.frmXwikiTreeMacro.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -103,7 +103,7 @@ public class XwikiTreeMacroParserGUI {
 	/**
 	 * Create the application.
 	 */
-	public XwikiTreeMacroParserGUI() {
+	public XwikiTreeMacroBuilderGUI() {
 		this.initialize();
 	}
 
@@ -111,15 +111,16 @@ public class XwikiTreeMacroParserGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		this.frame = new JFrame();
-		this.frame.setBounds(100, 100, 850, 500);
-		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.frmXwikiTreeMacro = new JFrame();
+		frmXwikiTreeMacro.setTitle("XWiki Tree Macro Builder");
+		this.frmXwikiTreeMacro.setBounds(100, 100, 850, 500);
+		this.frmXwikiTreeMacro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0, 0 };
 		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
-		this.frame.getContentPane().setLayout(gridBagLayout);
+		this.frmXwikiTreeMacro.getContentPane().setLayout(gridBagLayout);
 
 		JLabel lblCarpeta = new JLabel("Carpeta:");
 		lblCarpeta.setHorizontalAlignment(SwingConstants.CENTER);
@@ -128,7 +129,7 @@ public class XwikiTreeMacroParserGUI {
 		gbc_lblCarpeta.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCarpeta.gridx = 0;
 		gbc_lblCarpeta.gridy = 0;
-		this.frame.getContentPane().add(lblCarpeta, gbc_lblCarpeta);
+		this.frmXwikiTreeMacro.getContentPane().add(lblCarpeta, gbc_lblCarpeta);
 
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -136,7 +137,7 @@ public class XwikiTreeMacroParserGUI {
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 3;
 		gbc_scrollPane.gridy = 0;
-		this.frame.getContentPane().add(scrollPane, gbc_scrollPane);
+		this.frmXwikiTreeMacro.getContentPane().add(scrollPane, gbc_scrollPane);
 
 		this.textArea = new JTextArea();
 		scrollPane.setViewportView(this.textArea);
@@ -149,14 +150,14 @@ public class XwikiTreeMacroParserGUI {
 		gbc_textPane.fill = GridBagConstraints.BOTH;
 		gbc_textPane.gridx = 0;
 		gbc_textPane.gridy = 1;
-		this.frame.getContentPane().add(this.textPane, gbc_textPane);
+		this.frmXwikiTreeMacro.getContentPane().add(this.textPane, gbc_textPane);
 
 		this.btnFileChooser = new JButton("Selecciona carpeta...");
 		GridBagConstraints gbc_btnFileChooser = new GridBagConstraints();
 		gbc_btnFileChooser.insets = new Insets(0, 0, 5, 5);
 		gbc_btnFileChooser.gridx = 2;
 		gbc_btnFileChooser.gridy = 2;
-		this.frame.getContentPane().add(this.btnFileChooser, gbc_btnFileChooser);
+		this.frmXwikiTreeMacro.getContentPane().add(this.btnFileChooser, gbc_btnFileChooser);
 		this.btnFileChooser.addActionListener(this.fileChooserActionListener);
 
 		this.btnParseFolder = new JButton("Reiniciar \u00E1rbol");
@@ -165,7 +166,7 @@ public class XwikiTreeMacroParserGUI {
 		gbc_btnParseFolder.insets = new Insets(0, 0, 5, 5);
 		gbc_btnParseFolder.gridx = 0;
 		gbc_btnParseFolder.gridy = 3;
-		this.frame.getContentPane().add(this.btnParseFolder, gbc_btnParseFolder);
+		this.frmXwikiTreeMacro.getContentPane().add(this.btnParseFolder, gbc_btnParseFolder);
 		this.btnParseFolder.addActionListener(this.parseTreeActionListener);
 
 		this.btnCopyText = new JButton("Copiar texto");
@@ -175,7 +176,7 @@ public class XwikiTreeMacroParserGUI {
 		gbc_btnCopyText.gridx = 0;
 		gbc_btnCopyText.gridy = 4;
 		this.btnCopyText.addActionListener(this.copyActionListener);
-		this.frame.getContentPane().add(this.btnCopyText, gbc_btnCopyText);
+		this.frmXwikiTreeMacro.getContentPane().add(this.btnCopyText, gbc_btnCopyText);
 	}
 
 	public JTextArea getTextArea() {
