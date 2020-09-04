@@ -6,16 +6,14 @@ Este programa permite simplificar la creación de un árbol de directorios en XW
 Java 1.8 o superior instalado
 ## Descarga
 Sólo tienes que descargar la última versión estable del programa en la zona de *Releases* de Github o bien escogiendo la última versión en el [este enlace](https://github.com/pmkirsten/xwiki-tree-macro-builder/releases/latest). 
-
-![Imagen1](https://i.imgur.com/mJnwKzq.png)
 Descargamos el archivo con extensión **\*.jar** y lo ejecutamos. No es necesario instalar
 
 ## Uso
 Únicamente es necesario pulsar sobre el botón **Selecciona carpeta...** para que nos abra una venta que nos permita seleccionar la carpeta a analizar.
 
-![Imagen2](https://i.imgur.com/MzKRfgv.png)
-![Imagen3](https://i.imgur.com/pSxPJEh.png)
-![Imagen4](https://i.imgur.com/U0Qn3Sf.png)
+![Imagen1](https://i.imgur.com/dU6Ulck.png)
+![Imagen2](https://i.imgur.com/YGaPchx.png)
+![Imagen3](https://i.imgur.com/ZB20mBA.png)
 
 ## Estructura
 El código generado es la de una tabla de una fila y dos columnas según la [sintaxis de XWiki 2.1](https://www.xwiki.org/xwiki/bin/view/Documentation/UserGuide/Features/XWikiSyntax/), en cuya columna izquierda se encuentra el árbol con la estructura de carpetas y ficheros que hemos analizado. 
@@ -25,6 +23,9 @@ Incluye una etiqueta al principio ***{{wrapper}}*** y otra al final ***{{/wrappe
 
 ## Changelog
 
+### Versi�n 1.2.0
+-	Se ha a�adido la visualizaci�n gr�fica del arbol que se genera a su derecha
+-	Se ha mejorado el sistema exclusi�n de carpetas y ficheros desde el listado de exclusiones
 ### Versión 1.1.0
 -   Se puede añadir una lista de exclusiones. Se pueden excluir nombres de carpeta, nombres de fichero y extensiones de archivo
 -   Si dentro de la carpeta principal se encuentra un fichero  **.gitignore**, lo leerá y añadirá a lista de exclusiones los mismos elementos que se ignoran en git
