@@ -5,7 +5,7 @@ Este programa permite simplificar la creaci贸n de un 谩rbol de directorios en XW
 ## Requisitos previos
 Java 1.8 o superior instalado
 ## Descarga
-S贸lo tienes que descargar la 煤ltima versi贸n estable del programa en la zona de *Releases* de Github o bien escogiendo la 煤ltima versi贸n en el [este enlace](https://github.com/pmkirsten/xwiki-tree-macro-builder/releases/latest). 
+Solo tienes que descargar la 煤ltima versi贸n estable del programa en la zona de *Releases* de Github o bien escogiendo la 煤ltima versi贸n en el [este enlace](https://github.com/pmkirsten/xwiki-tree-macro-builder/releases/latest). 
 Descargamos el archivo con extensi贸n **\*.jar** y lo ejecutamos. No es necesario instalar
 
 ## Uso
@@ -23,14 +23,14 @@ Incluye una etiqueta al principio ***{{wrapper}}*** y otra al final ***{{/wrappe
 
 ## Changelog
 
-### Versi髇 1.2.0
--	Se ha a馻dido la visualizaci髇 gr醘ica del arbol que se genera a su derecha
--	Se ha mejorado el sistema exclusi髇 de carpetas y ficheros desde el listado de exclusiones
+### Versi贸n 1.2.0
+-	Se ha a帽adido la visualizaci贸n gr谩fica del arbol que se genera a su derecha
+-	Se ha mejorado el sistema exclusi贸n de carpetas y ficheros desde el listado de exclusiones
 ### Versi贸n 1.1.0
 -   Se puede a帽adir una lista de exclusiones. Se pueden excluir nombres de carpeta, nombres de fichero y extensiones de archivo
--   Si dentro de la carpeta principal se encuentra un fichero  **.gitignore**, lo leer谩 y a帽adir谩 a lista de exclusiones los mismos elementos que se ignoran en git
+-   Si dentro de la carpeta principal se encuentra un fichero  **.gitignore**, lo leer谩 y a帽adir谩 a lista de exclusiones los mismos elementos que se ignoran en **.gitignore**
 -   Por defecto, a帽adir谩 a la lista de exclusiones la carpeta  **.git**
 ### Versi贸n 1.0.0
 -   Seleccionar una carpeta y ver su representaci贸n en un 谩rbol, apta para la visualizaci贸n de esa estructura en formato de carpetas y ficheros
 -   Volver a construir el 谩rbol sin seleccionar la carpeta nuevamente
--   Copiar el contenido en el portapapeles mediante un b贸t贸n.
+-   Copiar el contenido en el portapapeles mediante un bot贸n
