@@ -56,9 +56,10 @@ public class XwikiTreeMacroBuilderGUI {
 			if (XwikiTreeMacroBuilderGUI.this.fileChooser.showOpenDialog(XwikiTreeMacroBuilderGUI.this.frmXwikiTreeMacro) == JFileChooser.APPROVE_OPTION) {
 				XwikiTreeMacroBuilderGUI.this.path = XwikiTreeMacroBuilderGUI.this.fileChooser.getSelectedFile().getAbsolutePath();
 				XwikiTreeMacroBuilderGUI.this.textPane.setText(XwikiTreeMacroBuilderGUI.this.path);
-				XwikiTreeMacroBuilderGUI.this.builder.getIgnoreExtensions().clear();
+				XwikiTreeMacroBuilderGUI.this.builder.setBasePath(Paths.get(XwikiTreeMacroBuilderGUI.this.path));
 				XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().clear();
-				XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().add(".git");
+				XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElementsPathMatcher().clear();
+				XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().add(".git/");
 				XwikiTreeMacroBuilderGUI.this.builder.checkGitignores(Paths.get(XwikiTreeMacroBuilderGUI.this.path));
 				StringBuilder builder = new StringBuilder();
 				for (String ignore : XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements()) {
@@ -66,9 +67,6 @@ public class XwikiTreeMacroBuilderGUI {
 				}
 				XwikiTreeMacroBuilderGUI.this.exclusionTextArea.setText(builder.toString());
 				XwikiTreeMacroBuilderGUI.this.btnParseFolder.doClick();
-
-			} else {
-				System.out.println("No Selection ");
 			}
 		}
 
@@ -78,16 +76,12 @@ public class XwikiTreeMacroBuilderGUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			XwikiTreeMacroBuilderGUI.this.builder.getIgnoreExtensions().clear();
 			XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().clear();
+			XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElementsPathMatcher().clear();
 			for (String line : XwikiTreeMacroBuilderGUI.this.exclusionTextArea.getText().split("\\n")) {
 				XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().add(line);
-
-				if (line.startsWith("*")) {
-					XwikiTreeMacroBuilderGUI.this.builder.getIgnoreExtensions().add(line.substring(1));
-				}
-
 			}
+			XwikiTreeMacroBuilderGUI.this.builder.convertExclusionsToPathMatcher();
 			String stringTree = XwikiTreeMacroBuilderGUI.this.builder.walk(XwikiTreeMacroBuilderGUI.this.path);
 			XwikiTreeMacroBuilderGUI.this.populateTree();
 			XwikiTreeMacroBuilderGUI.this.stringTree.setText(stringTree);
@@ -141,7 +135,7 @@ public class XwikiTreeMacroBuilderGUI {
 	private void initialize() {
 		this.frmXwikiTreeMacro = new JFrame();
 		this.frmXwikiTreeMacro.setTitle("XWiki Tree Macro Builder");
-		this.frmXwikiTreeMacro.setBounds(100, 100, 850, 500);
+		this.frmXwikiTreeMacro.setBounds(100, 100, 1500, 735);
 		this.frmXwikiTreeMacro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 129, 184, 0 };
@@ -175,6 +169,7 @@ public class XwikiTreeMacroBuilderGUI {
 
 		this.scrollPane = new JScrollPane();
 		this.splitPane.setLeftComponent(this.scrollPane);
+		this.splitPane.setDividerLocation(315);		
 
 		this.gTree = new JTree();
 		this.gTree.setModel(null);
@@ -236,14 +231,6 @@ public class XwikiTreeMacroBuilderGUI {
 
 		this.exclusionTextArea = new JTextArea();
 		this.scrollExclusionTextArea.setViewportView(this.exclusionTextArea);
-	}
-
-	public JTextArea getTextArea() {
-		return this.stringTree;
-	}
-
-	public JTextPane getTextPane() {
-		return this.textPane;
 	}
 
 	public void populateTree() {
