@@ -2,9 +2,9 @@ package es.pmkirsten.gui;
 
 public class TreeElement {
 
-	public static String FOLDER_CLOSED_ICON = "/es/pmkirsten/icons/folder-solid.png";
-	public static String FOLDER_OPEN_ICON = "/es/pmkirsten/icons/folder-open-solid.png";
-	public static String FILE_ICON = "/es/pmkirsten/icons/file-solid.png";
+	public static String FOLDER_CLOSED_ICON = "/folder-solid.png";
+	public static String FOLDER_OPEN_ICON = "/folder-open-solid.png";
+	public static String FILE_ICON = "/file-solid.png";
 	public static final int FOLDER_CLOSED = 1;
 	public static final int FOLDER_OPEN = 2;
 	public static final int FILE = 3;
