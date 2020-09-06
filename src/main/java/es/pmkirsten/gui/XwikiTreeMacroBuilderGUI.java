@@ -15,6 +15,9 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -43,6 +46,9 @@ public class XwikiTreeMacroBuilderGUI {
 	protected JSplitPane splitPane;
 	protected JScrollPane scrollPane;
 	protected JTree gTree;
+	private JMenuBar menuBar;
+	private JMenu aboutMenu;
+	private JMenuItem aboutMenuInfo;
 	protected ActionListener fileChooserActionListener = new ActionListener() {
 
 		@Override
@@ -139,9 +145,9 @@ public class XwikiTreeMacroBuilderGUI {
 		this.frmXwikiTreeMacro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 129, 184, 0 };
-		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		this.frmXwikiTreeMacro.getContentPane().setLayout(gridBagLayout);
 
 		JLabel lblCarpeta = new JLabel("Carpeta:");
@@ -150,7 +156,7 @@ public class XwikiTreeMacroBuilderGUI {
 		gbc_lblCarpeta.anchor = GridBagConstraints.WEST;
 		gbc_lblCarpeta.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCarpeta.gridx = 0;
-		gbc_lblCarpeta.gridy = 0;
+		gbc_lblCarpeta.gridy = 1;
 		this.frmXwikiTreeMacro.getContentPane().add(lblCarpeta, gbc_lblCarpeta);
 
 		this.splitPane = new JSplitPane();
@@ -158,7 +164,7 @@ public class XwikiTreeMacroBuilderGUI {
 		gbc_splitPane.gridheight = 6;
 		gbc_splitPane.fill = GridBagConstraints.BOTH;
 		gbc_splitPane.gridx = 2;
-		gbc_splitPane.gridy = 0;
+		gbc_splitPane.gridy = 1;
 		this.frmXwikiTreeMacro.getContentPane().add(this.splitPane, gbc_splitPane);
 
 		JScrollPane scrollStringTree = new JScrollPane();
@@ -169,7 +175,7 @@ public class XwikiTreeMacroBuilderGUI {
 
 		this.scrollPane = new JScrollPane();
 		this.splitPane.setLeftComponent(this.scrollPane);
-		this.splitPane.setDividerLocation(315);		
+		this.splitPane.setDividerLocation(315);
 
 		this.gTree = new JTree();
 		this.gTree.setModel(null);
@@ -182,7 +188,7 @@ public class XwikiTreeMacroBuilderGUI {
 		gbc_textPane.insets = new Insets(0, 0, 5, 5);
 		gbc_textPane.fill = GridBagConstraints.BOTH;
 		gbc_textPane.gridx = 0;
-		gbc_textPane.gridy = 1;
+		gbc_textPane.gridy = 2;
 		this.frmXwikiTreeMacro.getContentPane().add(this.textPane, gbc_textPane);
 
 		this.btnFileChooser = new JButton("Selecciona carpeta...");
@@ -190,7 +196,7 @@ public class XwikiTreeMacroBuilderGUI {
 		gbc_btnFileChooser.anchor = GridBagConstraints.EAST;
 		gbc_btnFileChooser.insets = new Insets(0, 0, 5, 5);
 		gbc_btnFileChooser.gridx = 1;
-		gbc_btnFileChooser.gridy = 2;
+		gbc_btnFileChooser.gridy = 3;
 		this.frmXwikiTreeMacro.getContentPane().add(this.btnFileChooser, gbc_btnFileChooser);
 		this.btnFileChooser.addActionListener(this.fileChooserActionListener);
 
@@ -199,7 +205,7 @@ public class XwikiTreeMacroBuilderGUI {
 		gbc_btnCopyText.anchor = GridBagConstraints.EAST;
 		gbc_btnCopyText.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCopyText.gridx = 1;
-		gbc_btnCopyText.gridy = 3;
+		gbc_btnCopyText.gridy = 4;
 		this.btnCopyText.addActionListener(this.copyActionListener);
 		this.frmXwikiTreeMacro.getContentPane().add(this.btnCopyText, gbc_btnCopyText);
 
@@ -208,7 +214,7 @@ public class XwikiTreeMacroBuilderGUI {
 		gbc_lblExclusions.anchor = GridBagConstraints.WEST;
 		gbc_lblExclusions.insets = new Insets(0, 0, 5, 5);
 		gbc_lblExclusions.gridx = 0;
-		gbc_lblExclusions.gridy = 4;
+		gbc_lblExclusions.gridy = 5;
 		this.frmXwikiTreeMacro.getContentPane().add(this.lblExclusions, gbc_lblExclusions);
 
 		this.btnParseFolder = new JButton("Reanalizar \u00E1rbol");
@@ -216,7 +222,7 @@ public class XwikiTreeMacroBuilderGUI {
 		gbc_btnParseFolder.anchor = GridBagConstraints.EAST;
 		gbc_btnParseFolder.insets = new Insets(0, 0, 5, 5);
 		gbc_btnParseFolder.gridx = 1;
-		gbc_btnParseFolder.gridy = 4;
+		gbc_btnParseFolder.gridy = 5;
 		this.frmXwikiTreeMacro.getContentPane().add(this.btnParseFolder, gbc_btnParseFolder);
 		this.btnParseFolder.addActionListener(this.parseTreeActionListener);
 
@@ -226,17 +232,35 @@ public class XwikiTreeMacroBuilderGUI {
 		gbc_scrollExclusionTextArea.insets = new Insets(0, 0, 0, 5);
 		gbc_scrollExclusionTextArea.fill = GridBagConstraints.BOTH;
 		gbc_scrollExclusionTextArea.gridx = 0;
-		gbc_scrollExclusionTextArea.gridy = 5;
+		gbc_scrollExclusionTextArea.gridy = 6;
 		this.frmXwikiTreeMacro.getContentPane().add(this.scrollExclusionTextArea, gbc_scrollExclusionTextArea);
 
 		this.exclusionTextArea = new JTextArea();
 		this.scrollExclusionTextArea.setViewportView(this.exclusionTextArea);
+
+		this.menuBar = new JMenuBar();
+		this.frmXwikiTreeMacro.setJMenuBar(this.menuBar);
+
+		this.aboutMenu = new JMenu("M\u00E1s informaci\u00F3n");
+		this.aboutMenu.setHorizontalAlignment(SwingConstants.CENTER);
+		this.menuBar.add(this.aboutMenu);
+
+		this.aboutMenuInfo = new JMenuItem("Acerca de...");
+		this.aboutMenuInfo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AboutInfoPanel panel = new AboutInfoPanel();
+				panel.setModal(true);
+				panel.setVisible(true);
+			}
+		});
+		this.aboutMenu.add(this.aboutMenuInfo);
 	}
 
 	public void populateTree() {
 		this.scrollPane.setViewportView(null);
 		this.gTree = new JTree(this.builder.getModelTree());
+		this.gTree.setCellRenderer(new ElementTreeCellRenderer());
 		this.scrollPane.setViewportView(this.gTree);
 	}
-
 }

@@ -2,7 +2,6 @@ package es.pmkirsten.builder;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,12 +14,14 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import es.pmkirsten.gui.TreeElement;
+
 public class XwikiTreeMacroPathBuilder {
 
 	private int initialCount = 0;
 	private int count = 0;
-	private LinkedHashSet<String> ignoreElements = new LinkedHashSet<>();
-	private LinkedHashSet<PathMatcher> ignoreElementsPathMatcher = new LinkedHashSet<>();
+	private final LinkedHashSet<String> ignoreElements = new LinkedHashSet<>();
+	private final LinkedHashSet<PathMatcher> ignoreElementsPathMatcher = new LinkedHashSet<>();
 	private DefaultMutableTreeNode modelTree;
 	private Path saveBasePath;
 
@@ -37,7 +38,7 @@ public class XwikiTreeMacroPathBuilder {
 	}
 
 	public LinkedHashSet<PathMatcher> getIgnoreElementsPathMatcher() {
-		return ignoreElementsPathMatcher;
+		return this.ignoreElementsPathMatcher;
 	}
 
 	public int getInitialCount() {
@@ -57,7 +58,7 @@ public class XwikiTreeMacroPathBuilder {
 	}
 
 	public Path getBasePath() {
-		return saveBasePath;
+		return this.saveBasePath;
 	}
 
 	public void setBasePath(Path saveBasePath) {
@@ -116,13 +117,15 @@ public class XwikiTreeMacroPathBuilder {
 
 	public DefaultMutableTreeNode buildTreeModel(Path p) {
 
-		if (checkExclusion(p)) {
+		if (this.checkExclusion(p)) {
 			return null;
 		}
 
-		DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(p.getFileName());
+		TreeElement node = new TreeElement(p.getFileName().toString(), TreeElement.FILE);
+		DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(node);
 
 		if (this.checkDirectory(p)) {
+			node.setType(TreeElement.FOLDER_OPEN);
 			List<File> folders = new ArrayList<>();
 			List<File> files = new ArrayList<>();
 			for (File children : p.toFile().listFiles()) {
@@ -133,11 +136,17 @@ public class XwikiTreeMacroPathBuilder {
 				}
 			}
 			folders.addAll(files);
+			boolean nonemptyFolder = true;
 			for (File children : folders) {
 				DefaultMutableTreeNode childNode = this.buildTreeModel(children.toPath());
 				if (childNode != null) {
 					treeNode.add(childNode);
+					nonemptyFolder = false;
 				}
+			}
+
+			if (nonemptyFolder) {
+				node.setType(TreeElement.FOLDER_CLOSED);
 			}
 		}
 
@@ -146,7 +155,7 @@ public class XwikiTreeMacroPathBuilder {
 
 	public String printElement(Path p) {
 
-		if (checkExclusion(p)) {
+		if (this.checkExclusion(p)) {
 			return "";
 		}
 
