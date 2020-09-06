@@ -11,9 +11,9 @@ Descargamos el archivo con extensión **\*.jar** y lo ejecutamos. No es necesari
 ## Uso
 Únicamente es necesario pulsar sobre el botón **Selecciona carpeta...** para que nos abra una venta que nos permita seleccionar la carpeta a analizar.
 
-![Imagen1](https://i.imgur.com/dU6Ulck.png)
-![Imagen2](https://i.imgur.com/YGaPchx.png)
-![Imagen3](https://i.imgur.com/ZB20mBA.png)
+![Imagen1](https://i.imgur.com/eTU9Lin.png)
+![Imagen2](https://i.imgur.com/lNPr7s0.png)
+![Imagen3](https://i.imgur.com/U73GBzq.png)
 
 ## Estructura
 El código generado es la de una tabla de una fila y dos columnas según la [sintaxis de XWiki 2.1](https://www.xwiki.org/xwiki/bin/view/Documentation/UserGuide/Features/XWikiSyntax/), en cuya columna izquierda se encuentra el árbol con la estructura de carpetas y ficheros que hemos analizado. 
@@ -23,6 +23,9 @@ Incluye una etiqueta al principio ***{{wrapper}}*** y otra al final ***{{/wrappe
 
 ## Changelog
 
+### Versión 1.3.0
+-	Se ha mejorado la visualización del árbol, añadiendo el icono de carpeta cerrada
+-	Se ha añadido un menú que permite visualizar el menú "Acerca de"
 ### Versión 1.2.0
 -	Se ha añadido la visualización gráfica del arbol que se genera a su derecha
 -	Se ha mejorado el sistema exclusión de carpetas y ficheros desde el listado de exclusiones
