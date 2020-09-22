@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Paths;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -28,6 +29,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import es.pmkirsten.builder.XwikiTreeMacroPathBuilder;
+import javax.swing.JRadioButton;
 
 public class XwikiTreeMacroBuilderGUI {
 
@@ -46,9 +48,13 @@ public class XwikiTreeMacroBuilderGUI {
 	protected JSplitPane splitPane;
 	protected JScrollPane scrollPane;
 	protected JTree gTree;
-	private JMenuBar menuBar;
-	private JMenu aboutMenu;
-	private JMenuItem aboutMenuInfo;
+	protected JMenuBar menuBar;
+	protected JMenu aboutMenu;
+	protected JMenuItem aboutMenuInfo;
+	protected ButtonGroup iconGroup;
+	protected JLabel lblIcons;
+	protected JRadioButton glyphRadioBtn;
+	protected JRadioButton fontRadioBtn;
 	protected ActionListener fileChooserActionListener = new ActionListener() {
 
 		@Override
@@ -59,8 +65,10 @@ public class XwikiTreeMacroBuilderGUI {
 			XwikiTreeMacroBuilderGUI.this.fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			XwikiTreeMacroBuilderGUI.this.fileChooser.setAcceptAllFileFilterUsed(false);
 
-			if (XwikiTreeMacroBuilderGUI.this.fileChooser.showOpenDialog(XwikiTreeMacroBuilderGUI.this.frmXwikiTreeMacro) == JFileChooser.APPROVE_OPTION) {
-				XwikiTreeMacroBuilderGUI.this.path = XwikiTreeMacroBuilderGUI.this.fileChooser.getSelectedFile().getAbsolutePath();
+			if (XwikiTreeMacroBuilderGUI.this.fileChooser
+					.showOpenDialog(XwikiTreeMacroBuilderGUI.this.frmXwikiTreeMacro) == JFileChooser.APPROVE_OPTION) {
+				XwikiTreeMacroBuilderGUI.this.path = XwikiTreeMacroBuilderGUI.this.fileChooser.getSelectedFile()
+						.getAbsolutePath();
 				XwikiTreeMacroBuilderGUI.this.textPane.setText(XwikiTreeMacroBuilderGUI.this.path);
 				XwikiTreeMacroBuilderGUI.this.builder.setBasePath(Paths.get(XwikiTreeMacroBuilderGUI.this.path));
 				XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().clear();
@@ -105,6 +113,22 @@ public class XwikiTreeMacroBuilderGUI {
 		}
 	};
 
+	protected ActionListener setGlyphIcons = new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			XwikiTreeMacroBuilderGUI.this.builder.setGlyphIcons();
+		}
+	};
+	
+	protected ActionListener setFontAwesomeIcons = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				XwikiTreeMacroBuilderGUI.this.builder.setFontAwesomeIcons();
+			}
+		};
+
 	/**
 	 * Launch the application.
 	 */
@@ -144,15 +168,45 @@ public class XwikiTreeMacroBuilderGUI {
 		this.frmXwikiTreeMacro.setBounds(100, 100, 1500, 735);
 		this.frmXwikiTreeMacro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 0, 129, 184, 0 };
+		gridBagLayout.columnWidths = new int[] { 0, 0, 0, 129, 184, 0 };
 		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		this.frmXwikiTreeMacro.getContentPane().setLayout(gridBagLayout);
+
+		lblIcons = new JLabel("Iconos:");
+		GridBagConstraints gbc_lblIcons = new GridBagConstraints();
+		gbc_lblIcons.insets = new Insets(0, 0, 5, 5);
+		gbc_lblIcons.gridx = 0;
+		gbc_lblIcons.gridy = 0;
+		frmXwikiTreeMacro.getContentPane().add(lblIcons, gbc_lblIcons);
+
+		iconGroup = new ButtonGroup();
+		glyphRadioBtn = new JRadioButton("Glyphicons");
+		GridBagConstraints gbc_rdBtnGlypgRadioButton = new GridBagConstraints();
+		gbc_rdBtnGlypgRadioButton.anchor = GridBagConstraints.WEST;
+		gbc_rdBtnGlypgRadioButton.insets = new Insets(0, 0, 5, 5);
+		gbc_rdBtnGlypgRadioButton.gridx = 1;
+		gbc_rdBtnGlypgRadioButton.gridy = 0;
+		frmXwikiTreeMacro.getContentPane().add(glyphRadioBtn, gbc_rdBtnGlypgRadioButton);
+		glyphRadioBtn.addActionListener(this.setGlyphIcons);
+		glyphRadioBtn.setSelected(true);
+
+		fontRadioBtn = new JRadioButton("Font Awesome");
+		GridBagConstraints gbc_rdbtnFontRadioButton = new GridBagConstraints();
+		gbc_rdbtnFontRadioButton.anchor = GridBagConstraints.WEST;
+		gbc_rdbtnFontRadioButton.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnFontRadioButton.gridx = 2;
+		gbc_rdbtnFontRadioButton.gridy = 0;
+		frmXwikiTreeMacro.getContentPane().add(fontRadioBtn, gbc_rdbtnFontRadioButton);
+		fontRadioBtn.addActionListener(this.setFontAwesomeIcons);
+		iconGroup.add(glyphRadioBtn);
+		iconGroup.add(fontRadioBtn);
 
 		JLabel lblCarpeta = new JLabel("Carpeta:");
 		lblCarpeta.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_lblCarpeta = new GridBagConstraints();
+		gbc_lblCarpeta.gridwidth = 2;
 		gbc_lblCarpeta.anchor = GridBagConstraints.WEST;
 		gbc_lblCarpeta.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCarpeta.gridx = 0;
@@ -161,10 +215,10 @@ public class XwikiTreeMacroBuilderGUI {
 
 		this.splitPane = new JSplitPane();
 		GridBagConstraints gbc_splitPane = new GridBagConstraints();
-		gbc_splitPane.gridheight = 6;
+		gbc_splitPane.gridheight = 7;
 		gbc_splitPane.fill = GridBagConstraints.BOTH;
-		gbc_splitPane.gridx = 2;
-		gbc_splitPane.gridy = 1;
+		gbc_splitPane.gridx = 4;
+		gbc_splitPane.gridy = 0;
 		this.frmXwikiTreeMacro.getContentPane().add(this.splitPane, gbc_splitPane);
 
 		JScrollPane scrollStringTree = new JScrollPane();
@@ -184,7 +238,7 @@ public class XwikiTreeMacroBuilderGUI {
 		this.textPane = new JTextPane();
 		this.textPane.setEditable(false);
 		GridBagConstraints gbc_textPane = new GridBagConstraints();
-		gbc_textPane.gridwidth = 2;
+		gbc_textPane.gridwidth = 4;
 		gbc_textPane.insets = new Insets(0, 0, 5, 5);
 		gbc_textPane.fill = GridBagConstraints.BOTH;
 		gbc_textPane.gridx = 0;
@@ -195,7 +249,7 @@ public class XwikiTreeMacroBuilderGUI {
 		GridBagConstraints gbc_btnFileChooser = new GridBagConstraints();
 		gbc_btnFileChooser.anchor = GridBagConstraints.EAST;
 		gbc_btnFileChooser.insets = new Insets(0, 0, 5, 5);
-		gbc_btnFileChooser.gridx = 1;
+		gbc_btnFileChooser.gridx = 3;
 		gbc_btnFileChooser.gridy = 3;
 		this.frmXwikiTreeMacro.getContentPane().add(this.btnFileChooser, gbc_btnFileChooser);
 		this.btnFileChooser.addActionListener(this.fileChooserActionListener);
@@ -204,13 +258,14 @@ public class XwikiTreeMacroBuilderGUI {
 		GridBagConstraints gbc_btnCopyText = new GridBagConstraints();
 		gbc_btnCopyText.anchor = GridBagConstraints.EAST;
 		gbc_btnCopyText.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCopyText.gridx = 1;
+		gbc_btnCopyText.gridx = 3;
 		gbc_btnCopyText.gridy = 4;
 		this.btnCopyText.addActionListener(this.copyActionListener);
 		this.frmXwikiTreeMacro.getContentPane().add(this.btnCopyText, gbc_btnCopyText);
 
 		this.lblExclusions = new JLabel("Exclusiones (incluye contenido .gitignore):");
 		GridBagConstraints gbc_lblExclusions = new GridBagConstraints();
+		gbc_lblExclusions.gridwidth = 3;
 		gbc_lblExclusions.anchor = GridBagConstraints.WEST;
 		gbc_lblExclusions.insets = new Insets(0, 0, 5, 5);
 		gbc_lblExclusions.gridx = 0;
@@ -221,14 +276,14 @@ public class XwikiTreeMacroBuilderGUI {
 		GridBagConstraints gbc_btnParseFolder = new GridBagConstraints();
 		gbc_btnParseFolder.anchor = GridBagConstraints.EAST;
 		gbc_btnParseFolder.insets = new Insets(0, 0, 5, 5);
-		gbc_btnParseFolder.gridx = 1;
+		gbc_btnParseFolder.gridx = 3;
 		gbc_btnParseFolder.gridy = 5;
 		this.frmXwikiTreeMacro.getContentPane().add(this.btnParseFolder, gbc_btnParseFolder);
 		this.btnParseFolder.addActionListener(this.parseTreeActionListener);
 
 		this.scrollExclusionTextArea = new JScrollPane();
 		GridBagConstraints gbc_scrollExclusionTextArea = new GridBagConstraints();
-		gbc_scrollExclusionTextArea.gridwidth = 2;
+		gbc_scrollExclusionTextArea.gridwidth = 4;
 		gbc_scrollExclusionTextArea.insets = new Insets(0, 0, 0, 5);
 		gbc_scrollExclusionTextArea.fill = GridBagConstraints.BOTH;
 		gbc_scrollExclusionTextArea.gridx = 0;
@@ -256,6 +311,8 @@ public class XwikiTreeMacroBuilderGUI {
 		});
 		this.aboutMenu.add(this.aboutMenuInfo);
 	}
+
+
 
 	public void populateTree() {
 		this.scrollPane.setViewportView(null);
