@@ -6,7 +6,7 @@ Este programa permite simplificar la creación de un árbol de directorios en XW
 Java 1.8 o superior instalado
 ## Descarga
 Solo tienes que descargar la última versión estable del programa en la zona de *Releases* de Github o bien escogiendo la última versión en el [este enlace](https://github.com/pmkirsten/xwiki-tree-macro-builder/releases/latest). 
-Descargamos el archivo con extensión **\*.jar** y lo ejecutamos. No es necesario instalar
+Descargamos el archivo con extensión **\*.jar** y lo ejecutamos. No es necesario instalar.
 
 ## Uso
 Únicamente es necesario pulsar sobre el botón **Selecciona carpeta...** para que nos abra una venta que nos permita seleccionar la carpeta a analizar.
