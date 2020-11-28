@@ -22,7 +22,8 @@ El código generado es la de una tabla de una fila y dos columnas según la [sin
 Incluye una etiqueta al principio ***{{wrapper}}*** y otra al final ***{{/wrapper}}*** que es no es estándar de la [sintaxis de XWiki 2.1](https://www.xwiki.org/xwiki/bin/view/Documentation/UserGuide/Features/XWikiSyntax/), si no que es una macro propia. Es necesario eliminar dichas etiquetas para que siga los estándares de la sintaxis
 
 ## Changelog
-
+### Versión 1.4.0
+- Se ha añadido la posibilidad de cambiar la fuente de los iconos de GlyphIcons a FontAwesome
 ### Versión 1.3.0
 -	Se ha mejorado la visualización del árbol, añadiendo el icono de carpeta cerrada
 -	Se ha añadido un menú que permite visualizar el menú "Acerca de"
