@@ -12,10 +12,12 @@ public class TreeElement {
 	private String icon;
 	private int type;
 
+
 	public TreeElement(String name, int type) {
 		this.name = name;
 		this.type = type;
 		this.setIcon(type);
+
 	}
 
 	private void setIcon(int type) {
