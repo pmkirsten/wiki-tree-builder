@@ -31,6 +31,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import es.pmkirsten.builder.XwikiTreeMacroPathBuilder;
@@ -94,17 +95,22 @@ public class XwikiTreeMacroBuilderGUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().clear();
-			XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElementsPathMatcher().clear();
-			for (String line : XwikiTreeMacroBuilderGUI.this.exclusionTextArea.getText().split("\\n")) {
-				XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().add(line);
-			}
-			XwikiTreeMacroBuilderGUI.this.builder.convertExclusionsToPathMatcher();
-			String stringTree = XwikiTreeMacroBuilderGUI.this.builder.walk(XwikiTreeMacroBuilderGUI.this.path);
+			XwikiTreeMacroBuilderGUI.this.reanalyzeTextTree();
 			XwikiTreeMacroBuilderGUI.this.populateTree();
-			XwikiTreeMacroBuilderGUI.this.stringTree.setText(stringTree);
+
 		}
 	};
+
+	public void reanalyzeTextTree() {
+		XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().clear();
+		XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElementsPathMatcher().clear();
+		for (String line : XwikiTreeMacroBuilderGUI.this.exclusionTextArea.getText().split("\\n")) {
+			XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().add(line);
+		}
+		XwikiTreeMacroBuilderGUI.this.builder.convertExclusionsToPathMatcher();
+		String stringTree = XwikiTreeMacroBuilderGUI.this.builder.walk(XwikiTreeMacroBuilderGUI.this.path);
+		XwikiTreeMacroBuilderGUI.this.stringTree.setText(stringTree);
+	}
 
 	protected ActionListener copyActionListener = new ActionListener() {
 
@@ -153,10 +159,13 @@ public class XwikiTreeMacroBuilderGUI {
 				int[] selectionRows = XwikiTreeMacroBuilderGUI.this.gTree.getSelectionRows();
 				TreePath[] selectionPaths = XwikiTreeMacroBuilderGUI.this.gTree.getSelectionPaths();
 				for (TreePath tp : selectionPaths) {
-					String itemName = ((TreeElement) ((DefaultMutableTreeNode) tp.getLastPathComponent()).getUserObject()).getName();
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode) tp.getLastPathComponent();
+					String itemName = ((TreeElement) node.getUserObject()).getName();
 					XwikiTreeMacroBuilderGUI.this.exclusionTextArea.setText(XwikiTreeMacroBuilderGUI.this.exclusionTextArea.getText() + "\n" + itemName);
+					DefaultTreeModel model = (DefaultTreeModel) XwikiTreeMacroBuilderGUI.this.gTree.getModel();
+					model.removeNodeFromParent(node);
 				}
-				XwikiTreeMacroBuilderGUI.this.btnParseFolder.doClick();
+				XwikiTreeMacroBuilderGUI.this.reanalyzeTextTree();
 
 			} else if (e.getKeyCode() == KeyEvent.VK_S) {
 
@@ -358,7 +367,6 @@ public class XwikiTreeMacroBuilderGUI {
 		this.gTree = new JTree(this.builder.getModelTree());
 		this.gTree.setCellRenderer(new ElementTreeCellRenderer());
 		this.gTree.addKeyListener(this.shortcutKeyListener);
-
 		this.scrollPane.setViewportView(this.gTree);
 	}
 }
