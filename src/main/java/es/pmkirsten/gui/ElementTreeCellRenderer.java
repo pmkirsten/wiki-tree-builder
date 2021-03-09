@@ -1,5 +1,6 @@
 package es.pmkirsten.gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.net.URL;
 
@@ -27,6 +28,16 @@ public class ElementTreeCellRenderer implements TreeCellRenderer {
 				this.label.setIcon(new ImageIcon(imageUrl));
 			}
 			this.label.setText(element.getName());
+
+			if (element.isSelected()) {
+				this.label.setForeground(new Color(0, 155, 0));
+				if (selected) {
+					this.label.setForeground(new Color(0, 200, 0));
+				}
+			} else {
+				this.label.setForeground(Color.BLACK);
+			}
+
 		} else {
 			this.label.setIcon(null);
 			this.label.setText("" + value);

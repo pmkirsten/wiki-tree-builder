@@ -155,9 +155,10 @@ public class XwikiTreeMacroBuilderGUI {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
+			int[] selectionRows = XwikiTreeMacroBuilderGUI.this.gTree.getSelectionRows();
+			TreePath[] selectionPaths = XwikiTreeMacroBuilderGUI.this.gTree.getSelectionPaths();
+
 			if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-				int[] selectionRows = XwikiTreeMacroBuilderGUI.this.gTree.getSelectionRows();
-				TreePath[] selectionPaths = XwikiTreeMacroBuilderGUI.this.gTree.getSelectionPaths();
 				for (TreePath tp : selectionPaths) {
 					DefaultMutableTreeNode node = (DefaultMutableTreeNode) tp.getLastPathComponent();
 					String itemName = ((TreeElement) node.getUserObject()).getName();
@@ -168,9 +169,12 @@ public class XwikiTreeMacroBuilderGUI {
 				XwikiTreeMacroBuilderGUI.this.reanalyzeTextTree();
 
 			} else if (e.getKeyCode() == KeyEvent.VK_S) {
-
-			} else if (e.getKeyCode() == KeyEvent.VK_D) {
-
+				for (TreePath tp : selectionPaths) {
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode) tp.getLastPathComponent();
+					TreeElement element = (TreeElement) node.getUserObject();
+					element.setSelected(!element.isSelected());
+				}
+				XwikiTreeMacroBuilderGUI.this.gTree.updateUI();
 			}
 
 

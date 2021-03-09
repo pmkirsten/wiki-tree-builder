@@ -22,14 +22,15 @@ public class XwikiTreeMacroPathBuilder {
 	private int count = 0;
 	private final LinkedHashSet<String> ignoreElements = new LinkedHashSet<>();
 	private final LinkedHashSet<PathMatcher> ignoreElementsPathMatcher = new LinkedHashSet<>();
+	private final LinkedHashSet<PathMatcher> selectedNodes = new LinkedHashSet<>();
 	private DefaultMutableTreeNode modelTree;
 	private Path saveBasePath;
-	private String glyphIconFolder = "glyphicon glyphicon-folder-open";
-	private String glyphIconFile = "glyphicon glyphicon-file";
-	private String fontIconFolder = "fas fa-folder-open";
-	private String fontIconFile = "fas fa-file";
-	protected String selectedIconFile = glyphIconFile;
-	protected String selectedIconFolder = glyphIconFolder;
+	private final String glyphIconFolder = "glyphicon glyphicon-folder-open";
+	private final String glyphIconFile = "glyphicon glyphicon-file";
+	private final String fontIconFolder = "fas fa-folder-open";
+	private final String fontIconFile = "fas fa-file";
+	protected String selectedIconFile = this.glyphIconFile;
+	protected String selectedIconFolder = this.glyphIconFolder;
 
 	public DefaultMutableTreeNode getModelTree() {
 		return this.modelTree;
@@ -70,25 +71,24 @@ public class XwikiTreeMacroPathBuilder {
 	public void setBasePath(Path saveBasePath) {
 		this.saveBasePath = saveBasePath;
 	}
-	
+
 	public String getSelectedIconFile() {
-		return selectedIconFile;
+		return this.selectedIconFile;
 	}
 
 	public String getSelectedIconFolder() {
-		return selectedIconFolder;
+		return this.selectedIconFolder;
 	}
 
 	public void setFontAwesomeIcons() {
 		this.selectedIconFile = this.fontIconFile;
 		this.selectedIconFolder = this.fontIconFolder;
 	}
-	
+
 	public void setGlyphIcons() {
 		this.selectedIconFile = this.glyphIconFile;
 		this.selectedIconFolder = this.glyphIconFolder;
 	}
-	
 
 	public String walk(String myPath) {
 		Path path = Paths.get(myPath);
@@ -198,7 +198,7 @@ public class XwikiTreeMacroPathBuilder {
 
 		if (this.checkDirectory(p) && (p.toFile().list().length == 0)) {
 			builder.append(this.returnWhitespaces(whiteSpaces));
-			builder.append("<li data-jstree='{\"icon\":\"" + this.getSelectedIconFolder() + "\"}'>");
+			builder.append("<li data-jstree='{" + this.checkSelectedNode(p) + "\"icon\":\"" + this.getSelectedIconFolder() + "\"}'>");
 			builder.append(p.getFileName());
 			builder.append("</li>\n");
 			return builder.toString();
@@ -237,6 +237,15 @@ public class XwikiTreeMacroPathBuilder {
 
 	}
 
+	private String checkSelectedNode(Path p) {
+		for (PathMatcher matcher : this.getSelectedNodes()) {
+			if (matcher.matches(p)) {
+				return "\"selected\": true";
+			}
+		}
+		return "";
+	}
+
 	public String returnWhitespaces(int times) {
 		return String.join("", Collections.nCopies(times, "  "));
 	}
@@ -257,10 +266,14 @@ public class XwikiTreeMacroPathBuilder {
 	public void convertExclusionsToPathMatcher() {
 		for (String exclusion : this.getIgnoreElements()) {
 			if (exclusion.endsWith("/")) {
-				exclusion = exclusion.substring(0,exclusion.length()-1);
+				exclusion = exclusion.substring(0, exclusion.length() - 1);
 			}
 			this.getIgnoreElementsPathMatcher().add(FileSystems.getDefault().getPathMatcher("glob:**/" + exclusion));
 		}
+	}
+
+	public void addSelectedNodes(String selectedNodeName) {
+		this.getSelectedNodes().add(FileSystems.getDefault().getPathMatcher("glob:**/" + selectedNodeName));
 	}
 
 	public static void main(String[] args) {
@@ -271,5 +284,9 @@ public class XwikiTreeMacroPathBuilder {
 		builder.checkGitignores(Paths.get(myPath));
 		builder.convertExclusionsToPathMatcher();
 		System.out.println(builder.walk(myPath));
+	}
+
+	public LinkedHashSet<PathMatcher> getSelectedNodes() {
+		return this.selectedNodes;
 	}
 }
