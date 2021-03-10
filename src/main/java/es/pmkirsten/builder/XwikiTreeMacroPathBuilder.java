@@ -208,7 +208,7 @@ public class XwikiTreeMacroPathBuilder {
 
 		if (this.checkDirectory(p) && (p.toFile().list().length == 0)) {
 			builder.append(this.returnWhitespaces(whiteSpaces));
-			builder.append("<li data-jstree='{\"icon\":\"" + this.getSelectedIconFolder() + "\"}'>");
+			builder.append("<li data-jstree='{" + this.checkSelected(p) + "\"icon\":\"" + this.getSelectedIconFolder() + "\"}'>");
 			builder.append(p.getFileName());
 			builder.append("</li>\n");
 			return builder.toString();
@@ -219,7 +219,7 @@ public class XwikiTreeMacroPathBuilder {
 		if ((this.getCount() - this.getInitialCount() - 1) == 0) {
 			builder.append("\"opened\":true, ");
 		}
-		builder.append("\"icon\":\"" + this.getSelectedIconFolder() + "\"}'>\n");
+		builder.append(this.checkSelected(p) + "\"icon\":\"" + this.getSelectedIconFolder() + "\"}'>\n");
 		builder.append(this.returnWhitespaces(whiteSpaces));
 		builder.append(p.getFileName() + "\n");
 		builder.append(this.returnWhitespaces(whiteSpaces));
