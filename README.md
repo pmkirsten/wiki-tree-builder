@@ -19,7 +19,7 @@ Descargamos el archivo con extensión **\*.jar** y lo ejecutamos. No es necesari
 El código generado es la de una tabla de una fila y dos columnas según la [sintaxis de XWiki 2.1](https://www.xwiki.org/xwiki/bin/view/Documentation/UserGuide/Features/XWikiSyntax/), en cuya columna izquierda se encuentra el árbol con la estructura de carpetas y ficheros que hemos analizado. 
 
 ## Notas
-Incluye una etiqueta al principio ***{{wrapper}}*** y otra al final ***{{/wrapper}}*** que es no es estándar de la [sintaxis de XWiki 2.1](https://www.xwiki.org/xwiki/bin/view/Documentation/UserGuide/Features/XWikiSyntax/), si no que es una macro propia. Es necesario eliminar dichas etiquetas para que siga los estándares de la sintaxis
+Incluye una etiqueta al principio ***{{wrapper}}*** y otra al final ***{{/wrapper}}*** que es no es estándar de la [sintaxis de XWiki 2.1](https://www.xwiki.org/xwiki/bin/view/Documentation/UserGuide/Features/XWikiSyntax/), si no que es una macro propia. Es necesario eliminar dichas etiquetas para que siga los estándares de la sintaxis.
 
 ## Changelog
 ### Versión 1.6.0
