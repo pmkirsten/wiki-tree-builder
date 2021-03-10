@@ -22,6 +22,11 @@ El código generado es la de una tabla de una fila y dos columnas según la [sin
 Incluye una etiqueta al principio ***{{wrapper}}*** y otra al final ***{{/wrapper}}*** que es no es estándar de la [sintaxis de XWiki 2.1](https://www.xwiki.org/xwiki/bin/view/Documentation/UserGuide/Features/XWikiSyntax/), si no que es una macro propia. Es necesario eliminar dichas etiquetas para que siga los estándares de la sintaxis
 
 ## Changelog
+### Versión 1.6.0
+- Se puede marcar / desmarcar un nodo del árbol como seleccionado /deseleccionado , pulsando la tecla 'S'. Esto añadirá / eliminará el atributo *"selected": true* al nodo de un fichero (Funciona también con nodos organizativos)
+### Versión 1.5.0
+- Se puede marcar / desmarcar un nodo del árbol como seleccionado / deseleccionado , pulsando la tecla 'S'. Esto añadirá / eliminará el atributo *"selected": true* al nodo de un fichero (sólo funciona con nodos no organizativos)
+- Se puede eliminar un nodo del árbol y añadirlo a la lista de elementos excluidos pulsando la tecla 'SUPR'
 ### Versión 1.4.0
 - Se ha añadido la posibilidad de cambiar la fuente de los iconos de GlyphIcons a FontAwesome
 ### Versión 1.3.0
