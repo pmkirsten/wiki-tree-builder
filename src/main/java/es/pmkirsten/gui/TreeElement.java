@@ -88,4 +88,9 @@ public class TreeElement {
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
+
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 }

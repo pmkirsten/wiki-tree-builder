@@ -95,6 +95,8 @@ public class XwikiTreeMacroBuilderGUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			XwikiTreeMacroBuilderGUI.this.builder.getSelectedElements().clear();
+			XwikiTreeMacroBuilderGUI.this.builder.getSelectedElementsPathMatcher().clear();
 			XwikiTreeMacroBuilderGUI.this.reanalyzeTextTree();
 			XwikiTreeMacroBuilderGUI.this.populateTree();
 
@@ -173,8 +175,16 @@ public class XwikiTreeMacroBuilderGUI {
 					DefaultMutableTreeNode node = (DefaultMutableTreeNode) tp.getLastPathComponent();
 					TreeElement element = (TreeElement) node.getUserObject();
 					element.setSelected(!element.isSelected());
+					if (element.isSelected()) {
+						XwikiTreeMacroBuilderGUI.this.builder.getSelectedElements().add(tp);
+					} else {
+						XwikiTreeMacroBuilderGUI.this.builder.getSelectedElements().remove(tp);
+					}
+
 				}
+				XwikiTreeMacroBuilderGUI.this.builder.convertSelectionsToPathMatcher();
 				XwikiTreeMacroBuilderGUI.this.gTree.updateUI();
+				XwikiTreeMacroBuilderGUI.this.reanalyzeTextTree();
 			}
 
 
