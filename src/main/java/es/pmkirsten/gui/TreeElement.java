@@ -11,11 +11,13 @@ public class TreeElement {
 	private String name;
 	private String icon;
 	private int type;
+	private boolean selected = false;
 
 	public TreeElement(String name, int type) {
 		this.name = name;
 		this.type = type;
 		this.setIcon(type);
+
 	}
 
 	private void setIcon(int type) {
@@ -77,5 +79,18 @@ public class TreeElement {
 
 	public static void setFileIcon(String fileIcon) {
 		TreeElement.FILE_ICON = fileIcon;
+	}
+
+	public boolean isSelected() {
+		return this.selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 }

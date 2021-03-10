@@ -9,6 +9,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.nio.file.Paths;
 
 import javax.swing.ButtonGroup;
@@ -19,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -27,9 +30,11 @@ import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import es.pmkirsten.builder.XwikiTreeMacroPathBuilder;
-import javax.swing.JRadioButton;
 
 public class XwikiTreeMacroBuilderGUI {
 
@@ -90,17 +95,24 @@ public class XwikiTreeMacroBuilderGUI {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().clear();
-			XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElementsPathMatcher().clear();
-			for (String line : XwikiTreeMacroBuilderGUI.this.exclusionTextArea.getText().split("\\n")) {
-				XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().add(line);
-			}
-			XwikiTreeMacroBuilderGUI.this.builder.convertExclusionsToPathMatcher();
-			String stringTree = XwikiTreeMacroBuilderGUI.this.builder.walk(XwikiTreeMacroBuilderGUI.this.path);
+			XwikiTreeMacroBuilderGUI.this.builder.getSelectedElements().clear();
+			XwikiTreeMacroBuilderGUI.this.builder.getSelectedElementsPathMatcher().clear();
+			XwikiTreeMacroBuilderGUI.this.reanalyzeTextTree();
 			XwikiTreeMacroBuilderGUI.this.populateTree();
-			XwikiTreeMacroBuilderGUI.this.stringTree.setText(stringTree);
+
 		}
 	};
+
+	public void reanalyzeTextTree() {
+		XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().clear();
+		XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElementsPathMatcher().clear();
+		for (String line : XwikiTreeMacroBuilderGUI.this.exclusionTextArea.getText().split("\\n")) {
+			XwikiTreeMacroBuilderGUI.this.builder.getIgnoreElements().add(line);
+		}
+		XwikiTreeMacroBuilderGUI.this.builder.convertExclusionsToPathMatcher();
+		String stringTree = XwikiTreeMacroBuilderGUI.this.builder.walk(XwikiTreeMacroBuilderGUI.this.path);
+		XwikiTreeMacroBuilderGUI.this.stringTree.setText(stringTree);
+	}
 
 	protected ActionListener copyActionListener = new ActionListener() {
 
@@ -120,14 +132,64 @@ public class XwikiTreeMacroBuilderGUI {
 			XwikiTreeMacroBuilderGUI.this.builder.setGlyphIcons();
 		}
 	};
-	
+
 	protected ActionListener setFontAwesomeIcons = new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				XwikiTreeMacroBuilderGUI.this.builder.setFontAwesomeIcons();
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			XwikiTreeMacroBuilderGUI.this.builder.setFontAwesomeIcons();
+		}
+	};
+
+	protected KeyListener shortcutKeyListener = new KeyListener() {
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			int[] selectionRows = XwikiTreeMacroBuilderGUI.this.gTree.getSelectionRows();
+			TreePath[] selectionPaths = XwikiTreeMacroBuilderGUI.this.gTree.getSelectionPaths();
+
+			if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+				for (TreePath tp : selectionPaths) {
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode) tp.getLastPathComponent();
+					String itemName = ((TreeElement) node.getUserObject()).getName();
+					XwikiTreeMacroBuilderGUI.this.exclusionTextArea.setText(XwikiTreeMacroBuilderGUI.this.exclusionTextArea.getText() + "\n" + itemName);
+					DefaultTreeModel model = (DefaultTreeModel) XwikiTreeMacroBuilderGUI.this.gTree.getModel();
+					model.removeNodeFromParent(node);
+				}
+				XwikiTreeMacroBuilderGUI.this.reanalyzeTextTree();
+
+			} else if (e.getKeyCode() == KeyEvent.VK_S) {
+				for (TreePath tp : selectionPaths) {
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode) tp.getLastPathComponent();
+					TreeElement element = (TreeElement) node.getUserObject();
+					element.setSelected(!element.isSelected());
+					if (element.isSelected()) {
+						XwikiTreeMacroBuilderGUI.this.builder.getSelectedElements().add(tp);
+					} else {
+						XwikiTreeMacroBuilderGUI.this.builder.getSelectedElements().remove(tp);
+					}
+
+				}
+				XwikiTreeMacroBuilderGUI.this.builder.convertSelectionsToPathMatcher();
+				XwikiTreeMacroBuilderGUI.this.gTree.updateUI();
+				XwikiTreeMacroBuilderGUI.this.reanalyzeTextTree();
 			}
-		};
+
+
+		}
+	};
 
 	/**
 	 * Launch the application.
@@ -174,34 +236,34 @@ public class XwikiTreeMacroBuilderGUI {
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		this.frmXwikiTreeMacro.getContentPane().setLayout(gridBagLayout);
 
-		lblIcons = new JLabel("Iconos:");
+		this.lblIcons = new JLabel("Iconos:");
 		GridBagConstraints gbc_lblIcons = new GridBagConstraints();
 		gbc_lblIcons.insets = new Insets(0, 0, 5, 5);
 		gbc_lblIcons.gridx = 0;
 		gbc_lblIcons.gridy = 0;
-		frmXwikiTreeMacro.getContentPane().add(lblIcons, gbc_lblIcons);
+		this.frmXwikiTreeMacro.getContentPane().add(this.lblIcons, gbc_lblIcons);
 
-		iconGroup = new ButtonGroup();
-		glyphRadioBtn = new JRadioButton("Glyphicons");
+		this.iconGroup = new ButtonGroup();
+		this.glyphRadioBtn = new JRadioButton("Glyphicons");
 		GridBagConstraints gbc_rdBtnGlypgRadioButton = new GridBagConstraints();
 		gbc_rdBtnGlypgRadioButton.anchor = GridBagConstraints.WEST;
 		gbc_rdBtnGlypgRadioButton.insets = new Insets(0, 0, 5, 5);
 		gbc_rdBtnGlypgRadioButton.gridx = 1;
 		gbc_rdBtnGlypgRadioButton.gridy = 0;
-		frmXwikiTreeMacro.getContentPane().add(glyphRadioBtn, gbc_rdBtnGlypgRadioButton);
-		glyphRadioBtn.addActionListener(this.setGlyphIcons);
-		glyphRadioBtn.setSelected(true);
+		this.frmXwikiTreeMacro.getContentPane().add(this.glyphRadioBtn, gbc_rdBtnGlypgRadioButton);
+		this.glyphRadioBtn.addActionListener(this.setGlyphIcons);
+		this.glyphRadioBtn.setSelected(true);
 
-		fontRadioBtn = new JRadioButton("Font Awesome");
+		this.fontRadioBtn = new JRadioButton("Font Awesome");
 		GridBagConstraints gbc_rdbtnFontRadioButton = new GridBagConstraints();
 		gbc_rdbtnFontRadioButton.anchor = GridBagConstraints.WEST;
 		gbc_rdbtnFontRadioButton.insets = new Insets(0, 0, 5, 5);
 		gbc_rdbtnFontRadioButton.gridx = 2;
 		gbc_rdbtnFontRadioButton.gridy = 0;
-		frmXwikiTreeMacro.getContentPane().add(fontRadioBtn, gbc_rdbtnFontRadioButton);
-		fontRadioBtn.addActionListener(this.setFontAwesomeIcons);
-		iconGroup.add(glyphRadioBtn);
-		iconGroup.add(fontRadioBtn);
+		this.frmXwikiTreeMacro.getContentPane().add(this.fontRadioBtn, gbc_rdbtnFontRadioButton);
+		this.fontRadioBtn.addActionListener(this.setFontAwesomeIcons);
+		this.iconGroup.add(this.glyphRadioBtn);
+		this.iconGroup.add(this.fontRadioBtn);
 
 		JLabel lblCarpeta = new JLabel("Carpeta:");
 		lblCarpeta.setHorizontalAlignment(SwingConstants.CENTER);
@@ -318,6 +380,7 @@ public class XwikiTreeMacroBuilderGUI {
 		this.scrollPane.setViewportView(null);
 		this.gTree = new JTree(this.builder.getModelTree());
 		this.gTree.setCellRenderer(new ElementTreeCellRenderer());
+		this.gTree.addKeyListener(this.shortcutKeyListener);
 		this.scrollPane.setViewportView(this.gTree);
 	}
 }
