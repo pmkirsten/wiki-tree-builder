@@ -47,7 +47,7 @@ public class AboutInfoPanel extends JDialog {
 		this.getContentPane().add(this.contentPanel, BorderLayout.CENTER);
 		this.contentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		{
-			JLabel developText = new JLabel("Esta aplicación ha sido desarrollada por Pablo Martínez Kirsten.");
+			JLabel developText = new JLabel("Esta aplicaciÃ³n ha sido desarrollada por Pablo MartÃ­nez Kirsten.");
 			this.contentPanel.add(developText);
 		}
 		{

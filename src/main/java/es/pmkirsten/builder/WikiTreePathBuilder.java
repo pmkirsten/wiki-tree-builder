@@ -17,7 +17,7 @@ import javax.swing.tree.TreePath;
 
 import es.pmkirsten.gui.TreeElement;
 
-public class XwikiTreeMacroPathBuilder {
+public class WikiTreePathBuilder {
 
 	private int initialCount = 0;
 	private int count = 0;
@@ -100,13 +100,20 @@ public class XwikiTreeMacroPathBuilder {
 		this.selectedIconFolder = this.glyphIconFolder;
 	}
 
+	public void setCustomIcons(String folder, String file) {
+		this.selectedIconFile = file;
+		this.selectedIconFolder = folder;
+	}
+
 	public String walk(String myPath) {
 		Path path = Paths.get(myPath);
 		this.setInitialCount(path.getNameCount() - 1);
 		StringBuilder builder = new StringBuilder();
-		builder.append("{{wrapper}}\n|(((\n{{tree}}\n{{velocity}}\n{{html}}\n<ul>\n");
+//		builder.append("{{wrapper}}\n|(((\n{{tree}}\n{{velocity}}\n{{html}}\n");
+		builder.append("<ul>\n");
 		builder.append(this.printElement(path));
-		builder.append("</ul>\n{{/html}}\n{{/velocity}}\n{{/tree}}\n)))|(((\n)))\n{{/wrapper}}");
+		builder.append("</ul>\n");
+//		builder.append("{{/html}}\n{{/velocity}}\n{{/tree}}\n)))|(((\n)))\n{{/wrapper}}");
 		this.setModelTree(this.buildTreeModel(path));
 		return builder.toString();
 	}
@@ -306,7 +313,7 @@ public class XwikiTreeMacroPathBuilder {
 	}
 
 	public static void main(String[] args) {
-		XwikiTreeMacroPathBuilder builder = new XwikiTreeMacroPathBuilder();
+		WikiTreePathBuilder builder = new WikiTreePathBuilder();
 		String myPath = "F:\\workspace\\RaceControl\\src";
 		builder.setBasePath(Paths.get(myPath));
 		builder.getIgnoreElements().add(".git");

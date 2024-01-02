@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.pmkirsten</groupId>
 	<artifactId>xwiki-tree-macro</artifactId>
-	<version>1.6.0-SNAPSHOT</version>
+	<version>1.7.0</version>
 	<name>Xwiki Tree Macro</name>
 	<description>Xwiki Tree Macro</description>
 
@@ -26,11 +26,11 @@
 						</goals>
 						<configuration>
 							<shadedArtifactAttached>true</shadedArtifactAttached>
-							<finalName>XWikiTreeMacroBuilder</finalName>
+							<finalName>WikiTreeBuilder</finalName>
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>es.pmkirsten.gui.XwikiTreeMacroBuilderGUI</mainClass>
+									<mainClass>es.pmkirsten.gui.WikiTreeBuilderGUI</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>
