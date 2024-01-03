@@ -5,7 +5,7 @@ Este programa permite la creación de un árbol de directorios con HTML para uti
 ## Requisitos previos
 Java 1.8 o superior instalado
 ## Descarga
-Solo tienes que descargar la última versión estable del programa en la zona de *Releases* de Github o bien escogiendo la última versión en el [este enlace](https://github.com/pmkirsten/xwiki-tree-macro-builder/releases/latest). 
+Solo tienes que descargar la última versión estable del programa en la zona de *Releases* de Github o bien escogiendo la última versión en el [este enlace](https://github.com/pmkirsten/wiki-tree-builder/releases/latest). 
 Descargamos el archivo con extensión **\*.jar** y lo ejecutamos. No es necesario instalar.
 
 ## Uso
