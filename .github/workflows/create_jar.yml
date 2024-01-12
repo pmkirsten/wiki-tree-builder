@@ -22,3 +22,10 @@ jobs:
       - name: Generate jar from project
         run: |
           mvn -B clean install
+      - name: Upload artifact ready to download
+        uses: actions/upload-artifact@v3
+        with:
+          name: wiki-tree-builder
+          retention-days: 1
+          path: |
+            /target/WikiTreeBuilder.jar
