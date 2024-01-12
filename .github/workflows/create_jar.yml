@@ -19,20 +19,13 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-      - name: Setup tree
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y tree
       - name: Generate jar from project
         run: |
           mvn -B clean install
-      - name: Show files
-        run: |
-          tree
       - name: Upload artifact ready to download
         uses: actions/upload-artifact@v3
         with:
           name: wiki-tree-builder
           retention-days: 1
           path: |
-            /wiki-tree-builder/target/WikiTreeBuilder.jar
+            ./target/WikiTreeBuilder.jar
