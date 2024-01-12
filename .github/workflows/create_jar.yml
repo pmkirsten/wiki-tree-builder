@@ -28,4 +28,4 @@ jobs:
           name: wiki-tree-builder
           retention-days: 1
           path: |
-            /target/WikiTreeBuilder.jar
+            /wiki-tree-builder/target/WikiTreeBuilder.jar
