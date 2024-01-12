@@ -1,11 +1,11 @@
 
-# XWiki Tree Macro Builder
-Este programa permite simplificar la creación de un árbol de directorios en XWiki usando el plugin de [Tree Macro](https://extensions.xwiki.org/xwiki/bin/view/Extension/Tree%20Macro)
+# Wiki Tree Builder
+Este programa permite la creación de un árbol de directorios con HTML para utilizar con la librería de jsTree e iconos de Font Awesome, Glyphicons o iconos personalizados.
 
 ## Requisitos previos
 Java 1.8 o superior instalado
 ## Descarga
-Solo tienes que descargar la última versión estable del programa en la zona de *Releases* de Github o bien escogiendo la última versión en el [este enlace](https://github.com/pmkirsten/xwiki-tree-macro-builder/releases/latest). 
+Solo tienes que descargar la última versión estable del programa en la zona de *Releases* de Github o bien escogiendo la última versión en el [este enlace](https://github.com/pmkirsten/wiki-tree-builder/releases/latest). 
 Descargamos el archivo con extensión **\*.jar** y lo ejecutamos. No es necesario instalar.
 
 ## Uso
@@ -15,13 +15,11 @@ Descargamos el archivo con extensión **\*.jar** y lo ejecutamos. No es necesari
 ![Imagen2](https://i.imgur.com/lNPr7s0.png)
 ![Imagen3](https://i.imgur.com/U73GBzq.png)
 
-## Estructura
-El código generado es la de una tabla de una fila y dos columnas según la [sintaxis de XWiki 2.1](https://www.xwiki.org/xwiki/bin/view/Documentation/UserGuide/Features/XWikiSyntax/), en cuya columna izquierda se encuentra el árbol con la estructura de carpetas y ficheros que hemos analizado. 
-
-## Notas
-Incluye una etiqueta al principio ***{{wrapper}}*** y otra al final ***{{/wrapper}}*** que es no es estándar de la [sintaxis de XWiki 2.1](https://www.xwiki.org/xwiki/bin/view/Documentation/UserGuide/Features/XWikiSyntax/), si no que es una macro propia. Es necesario eliminar dichas etiquetas para que siga los estándares de la sintaxis.
-
 ## Changelog
+### Versión 1.7.0
+- Cambiado el nombre del proyecto
+- Añadidos iconos personalizados
+- Eliminado envoltorio personalizado del árbol
 ### Versión 1.6.0
 - Se puede marcar / desmarcar un nodo del árbol como seleccionado /deseleccionado , pulsando la tecla 'S'. Esto añadirá / eliminará el atributo *"selected": true* al nodo de un fichero (Funciona también con nodos organizativos)
 ### Versión 1.5.0
