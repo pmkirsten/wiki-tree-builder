@@ -68,6 +68,6 @@ jobs:
           tag: ${{ steps.tag.outputs.version }}
           name: ${{ steps.tag.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "target/*.jar"
+          artifacts: "target/WikiTreeBuilder.jar"
           body: |
             En el [README.md](CHANGELOG.md) tienes los cambios de la versión ${{ steps.tag.outputs.version }}
