@@ -70,4 +70,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: "target/WikiTreeBuilder.jar"
           body: |
-            En el [README.md](CHANGELOG.md) tienes los cambios de la versión ${{ steps.tag.outputs.version }}
+            En el [README.md](README.md#Changelog) tienes los cambios de la versión ${{ steps.tag.outputs.version }}

@@ -16,6 +16,8 @@ Descargamos el archivo con extensión **\*.jar** y lo ejecutamos. No es necesari
 ![Imagen3](https://i.imgur.com/U73GBzq.png)
 
 ## Changelog
+### Versión 1.8.0
+- Añadidas git actions
 ### Versión 1.7.0
 - Cambiado el nombre del proyecto
 - Añadidos iconos personalizados
