@@ -13,7 +13,7 @@ on:
         options:
           - main
 jobs:
-  Generate-a-RELEASE-in-Maven-Central:
+  Perform-a-RELEASE:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.merged == true && contains(join(github.event.pull_request.labels.*.name, ', '), 'release'))
     env:
@@ -65,6 +65,6 @@ jobs:
           tag: ${{ steps.tag.outputs.version }}
           name: ${{ steps.tag.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "./target/WikiTreeBuilder.jar"
+          artifacts: "target/*.jar"
           body: |
-            Check out the [changelog](CHANGELOG.md) for version ${{ steps.tag.outputs.version }}
+            En el [README.md](CHANGELOG.md) tienes los cambios de la versión ${{ steps.tag.outputs.version }}
