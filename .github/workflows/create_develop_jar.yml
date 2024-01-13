@@ -1,0 +1,31 @@
+name: Create *.jar
+on: 
+  workflow_dispatch:
+
+jobs:
+  Create-jar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get input parameters
+        run: |
+          echo "BRANCH=${{ github.ref }}" >> $GITHUB_ENV
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.BRANCH }}
+          fetch-depth: 0
+      - name: Setup Java JDK and Maven
+        uses: ontimize/setup-java-maven-gitAction@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - name: Generate jar from project
+        run: |
+          mvn -B clean install
+      - name: Upload artifact ready to download
+        uses: actions/upload-artifact@v3
+        with:
+          name: wiki-tree-builder
+          retention-days: 1
+          path: |
+            ./target/WikiTreeBuilder.jar
