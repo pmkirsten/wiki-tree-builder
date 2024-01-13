@@ -34,6 +34,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
+      - name: Generate jar from project
+        run: |
+          mvn -B clean install
       - name: Set author identity
         run: |
           git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
@@ -58,9 +61,6 @@ jobs:
         run: |
           version=${{ steps.tag.outputs.version }}
           gh pr create -B develop -H sync/$version --title "Backmerge from main into develop" --body "Created by a GitHub Action → Resync develop branch with main branch and increase project version"
-      - name: Generate jar from project
-        run: |
-          mvn -B clean install
       - name: Create release on Github
         uses: ncipollo/release-action@v1.13.0
         with:
